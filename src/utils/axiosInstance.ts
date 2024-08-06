@@ -1,7 +1,8 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: process.env.BASE_URL,
+    //TODO: extract into an environment variable
+    baseURL: "http://localhost:3000/api/v1",
     timeout: 10000,
     headers: {
         "Content-Type": "application/json",
@@ -20,3 +21,5 @@ axiosInstance.interceptors.request.use(
         return Promise.reject(err);
     }
 )
+
+export default axiosInstance;
