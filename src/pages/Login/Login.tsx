@@ -21,7 +21,7 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('token', response.data.token);
         navigate('/');
       }
     } catch (error) {
