@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="mt-20 mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>Enter your email below to login to your account.</CardDescription>
@@ -50,11 +50,20 @@ const Login = () => {
           <Label htmlFor="password">Password</Label>
           <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
         </div>
+        <div>
+          <Button className="w-full" onClick={handleLogin}>
+            Sign in
+          </Button>
+        </div>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <a href="#" className="underline">
+            Sign in
+          </a>
+        </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={handleLogin}>
-          Sign in
-        </Button>
+
       </CardFooter>
     </Card>
   );

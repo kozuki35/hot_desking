@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 
 const SignUp = () => {
   return (
-    <Card className="mx-auto max-w-sm">
+    <Card className="mt-20 mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>Enter your information to create an account</CardDescription>
