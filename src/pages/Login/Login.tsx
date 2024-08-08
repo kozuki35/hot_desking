@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axiosInstance from '@/utils/axiosInstance';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -57,9 +57,9 @@ const Login = () => {
         </div>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
-          <a href="#" className="underline">
-            Sign in
-          </a>
+          <Link to="/sign-up" className="underline">
+            Sign up
+          </Link>
         </div>
       </CardContent>
       <CardFooter>
