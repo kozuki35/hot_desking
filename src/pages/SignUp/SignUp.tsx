@@ -18,7 +18,7 @@ const SignUp = () => {
   const handleSignUp = async () => {
     // Call Signup API
     try {
-      const response = await axiosInstance.post('/users/sign-up', {
+      const response = await axiosInstance.post('/users/signup', {
         firstName,
         lastName,
         email,
@@ -33,7 +33,7 @@ const SignUp = () => {
         }, 2000); // Redirect after 2 seconds
       }
     } catch (error) {
-      console.error('Error during sign-up:', error);
+      console.error('Error during signup:', error);
     }
   };
 
@@ -91,9 +91,9 @@ const SignUp = () => {
         <Button className="w-full" onClick={handleSignUp}>
           Create an account
         </Button>
-        <Button variant="outline" className="w-full">
+        {/* <Button variant="outline" className="w-full">
           Sign up with GitHub
-        </Button>
+        </Button> */}
         <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
           <Link to="/login" className="underline">
