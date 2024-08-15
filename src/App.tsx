@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Dashboard } from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
-import { User } from 'lucide-react';
+import UserManagement from './pages/User/UserManagement';
+
 
 const routes = (
   <Router>
@@ -10,7 +11,7 @@ const routes = (
       <Route path="/" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/user" element={<User />} />
+      <Route path="/user-management" element={<UserManagement />} />
     </Routes>
   </Router>
 );

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 import {
   Bell,
@@ -60,14 +60,14 @@ export function Dashboard() {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                to="#"
+                to="/"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
               <Link
-                to="#"
+                to="/booking-history"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Clock className="h-4 w-4" />
@@ -78,7 +78,7 @@ export function Dashboard() {
               </Link>
               {/* for admin */}
               <Link
-                to="#"
+                to="/booking-history"
                 className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
@@ -86,7 +86,7 @@ export function Dashboard() {
               </Link>
               {/* for admin */}
               <Link
-                to="/user"
+                to="/user/user-management"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
