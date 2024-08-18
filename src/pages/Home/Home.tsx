@@ -1,22 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
+import { Bell, CircleUser, Clock, Home, LineChart, Menu, Package, Package2, Search, Users } from 'lucide-react';
 
-import {
-  Bell,
-  CircleUser,
-  Clock,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  Users,
-} from "lucide-react"
-
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,9 +12,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -39,9 +27,11 @@ export function Dashboard() {
   }, [navigate]);
 
   const logout = () => {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-  }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    window.location.href = '/login';
+  };
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -72,9 +62,7 @@ export function Dashboard() {
               >
                 <Clock className="h-4 w-4" />
                 Booking History
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge>
+                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">6</Badge>
               </Link>
               {/* for admin */}
               <Link
@@ -82,7 +70,7 @@ export function Dashboard() {
                 className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
               >
                 <Package className="h-4 w-4" />
-                Booking{" "}
+                Booking{' '}
               </Link>
               {/* for admin */}
               <Link
@@ -102,28 +90,20 @@ export function Dashboard() {
               </Link>
             </nav>
           </div>
-          
         </div>
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="shrink-0 md:hidden"
-              >
+              <Button variant="outline" size="icon" className="shrink-0 md:hidden">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
-                <Link
-                  to="#"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
+                <Link to="#" className="flex items-center gap-2 text-lg font-semibold">
                   <Package2 className="h-6 w-6" />
                   <span className="sr-only">Hot Desking</span>
                 </Link>
@@ -140,9 +120,7 @@ export function Dashboard() {
                 >
                   <Clock className="h-5 w-5" />
                   Booking History
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    6
-                  </Badge>
+                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">6</Badge>
                 </Link>
                 <Link
                   to="#"
@@ -166,7 +144,6 @@ export function Dashboard() {
                   Analytics
                 </Link>
               </nav>
-              
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
@@ -191,7 +168,9 @@ export function Dashboard() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <Link to={`/profile`}>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={logout}>Logout</DropdownMenuItem>
@@ -203,20 +182,17 @@ export function Dashboard() {
             <h1 className="text-lg font-semibold md:text-2xl">Desk Selection</h1>
           </div>
           <div
-            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1"
+            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
+            x-chunk="dashboard-02-chunk-1"
           >
             <div className="flex flex-col items-center gap-1 text-center">
-              <h3 className="text-2xl font-bold tracking-tight">
-                All Desks
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                You can choose a desk you prefer.
-              </p>
+              <h3 className="text-2xl font-bold tracking-tight">All Desks</h3>
+              <p className="text-sm text-muted-foreground">You can choose a desk you prefer.</p>
               <Button className="mt-4">Select</Button>
             </div>
           </div>
         </main>
       </div>
     </div>
-  )
+  );
 }
