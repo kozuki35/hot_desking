@@ -4,8 +4,8 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import axiosInstance from '@/utils/axiosInstance';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { BaseLayout } from '@/components/layout/BaseLayout';
 
 type User = {
   _id: string;
@@ -49,9 +49,7 @@ const UserManagement = () => {
 
       if (response.status === 200) {
         setUsers((prevUsers) =>
-          prevUsers.map((u, i) =>
-            i === index ? { ...u, role: updatedRole, status: updatedStatus } : u
-          )
+          prevUsers.map((u, i) => (i === index ? { ...u, role: updatedRole, status: updatedStatus } : u)),
         );
         toast.success('User updated successfully');
       }
@@ -60,7 +58,6 @@ const UserManagement = () => {
       toast.error('Error updating user');
     }
   };
-
 
   const handleRoleChange = (index: number, value: string) => {
     setRoles((prevRoles) => {
@@ -79,75 +76,70 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-      <Card className="xl:col-span-2">
-        <CardHeader className="flex flex-row items-center">
-          <div className="grid gap-2">
-            <CardTitle>Users</CardTitle>
-            <CardDescription>Manage your users here.</CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user, index) => (
-                <TableRow key={user._id || index}>
-                  <TableCell>
-                    <div className="font-medium">
-                      {user.firstName} {user.lastName}
-                    </div>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={roles[index]}
-                      onValueChange={(value) => handleRoleChange(index, value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Select
-                      value={statuses[index]}
-                      onValueChange={(value) => handleStatusChange(index, value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="inactive">Inactive</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button size="sm" onClick={() => handleUpdate(index)}>
-                      Update
-                    </Button>
-                  </TableCell>
+    <BaseLayout>
+      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <Card className="xl:col-span-2">
+          <CardHeader className="flex flex-row items-center">
+            <div className="grid gap-2">
+              <CardTitle>Users</CardTitle>
+              <CardDescription>Manage your users here.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      <ToastContainer theme="dark"/>
-    </div>
+              </TableHeader>
+              <TableBody>
+                {users.map((user, index) => (
+                  <TableRow key={user._id || index}>
+                    <TableCell>
+                      <div className="font-medium">
+                        {user.firstName} {user.lastName}
+                      </div>
+                    </TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <Select value={roles[index]} onValueChange={(value) => handleRoleChange(index, value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="user">User</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select value={statuses[index]} onValueChange={(value) => handleStatusChange(index, value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" onClick={() => handleUpdate(index)}>
+                        Update
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </main>
+    </BaseLayout>
   );
 };
 

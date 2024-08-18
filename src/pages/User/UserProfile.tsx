@@ -3,8 +3,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import axiosInstance from '@/utils/axiosInstance';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { BaseLayout } from '@/components/layout/BaseLayout';
 
 const UserProfile = () => {
   const [firstName, setFirstName] = useState('');
@@ -31,8 +31,8 @@ const UserProfile = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '');
-      const response = await axiosInstance.put(`/users/${user.id}/profile`, { firstName, lastName, password });
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const response = await axiosInstance.put(`/users/${user?.id}/profile`, { firstName, lastName, password });
       localStorage.setItem('user', JSON.stringify(response.data.user));
       toast.success('Your profile has been successfully updated.');
     } catch (error) {
@@ -42,52 +42,53 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-      <Card className="xl:col-span-2">
-        <CardHeader>
-          <CardTitle>User Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">First Name</label>
-              <Input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="First Name"
-              />
+    <BaseLayout>
+      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <Card className="xl:col-span-2">
+          <CardHeader>
+            <CardTitle>User Profile</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">First Name</label>
+                <Input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="First Name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                <Input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Last Name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <Input type="email" value={email} readOnly />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Last Name</label>
-              <Input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="Last Name"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <Input type="email" value={email} readOnly />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-              />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="text-right">
-          <Button onClick={handleUpdateProfile}>Update Profile</Button>
-        </CardFooter>
-      </Card>
-      <ToastContainer theme="dark"/>
-    </div>
+          </CardContent>
+          <CardFooter className="text-right">
+            <Button onClick={handleUpdateProfile}>Update Profile</Button>
+          </CardFooter>
+        </Card>
+      </main>
+    </BaseLayout>
   );
 };
 

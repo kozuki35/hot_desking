@@ -3,10 +3,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axiosInstance from '@/utils/axiosInstance';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const Login = () => {
+const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
