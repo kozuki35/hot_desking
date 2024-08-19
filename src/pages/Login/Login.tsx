@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import axiosInstance from '@/utils/axiosInstance';
 import { FC, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Login: FC = () => {
   const [email, setEmail] = useState('');
@@ -27,6 +28,7 @@ const Login: FC = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error('Login failed. Please check your email and password.');
     }
   };
 
@@ -64,6 +66,7 @@ const Login: FC = () => {
         </div>
       </CardContent>
       <CardFooter></CardFooter>
+      <ToastContainer theme="light" />
     </Card>
   );
 };
