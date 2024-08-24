@@ -1,13 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
 import { BaseLayout } from '@/components/layout/BaseLayout';
+import { ListFilter, PlusCircle } from 'lucide-react';
 
-type User = {
+import UserTable from '@/components/user/UserTable';
+import AddUserForm from '@/components/user/AddUserForm';
+import TabsMenu from '@/components/user/TabsMenu';
+import SearchBox from '@/components/user/SearchBox';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+
+export type User = {
   _id: string;
   firstName: string;
   lastName: string;
@@ -20,6 +32,16 @@ const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<string[]>([]);
   const [statuses, setStatuses] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<string>('all');
+
+  const [newFirstName, setNewFirstName] = useState('');
+  const [newLastName, setNewLastName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showSearchBox, setShowSearchBox] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -31,113 +53,127 @@ const UserManagement = () => {
         setRoles(usersData.map((user: User) => user.role));
         setStatuses(usersData.map((user: User) => user.status));
       } catch (error) {
-        console.error('Error fetching users:', error);
-        toast.error('Error fetching users');
+        toast.error('Failed to fetch users.');
       }
     };
 
     fetchUsers();
   }, []);
 
-  const handleUpdate = async (index: number) => {
-    const user = users[index];
-    const updatedRole = roles[index];
-    const updatedStatus = statuses[index];
-
-    try {
-      const response = await axiosInstance.put(`/users/${user._id}`, { role: updatedRole, status: updatedStatus });
-
-      if (response.status === 200) {
-        setUsers((prevUsers) =>
-          prevUsers.map((u, i) => (i === index ? { ...u, role: updatedRole, status: updatedStatus } : u)),
-        );
-        toast.success('User updated successfully');
-      }
-    } catch (error) {
-      console.error('Error updating user:', error);
-      toast.error('Error updating user');
-    }
-  };
-
   const handleRoleChange = (index: number, value: string) => {
-    setRoles((prevRoles) => {
-      const newRoles = [...prevRoles];
-      newRoles[index] = value;
-      return newRoles;
-    });
+    const updatedRoles = [...roles];
+    updatedRoles[index] = value;
+    setRoles(updatedRoles);
   };
 
   const handleStatusChange = (index: number, value: string) => {
-    setStatuses((prevStatuses) => {
-      const newStatuses = [...prevStatuses];
-      newStatuses[index] = value;
-      return newStatuses;
-    });
+    const updatedStatuses = [...statuses];
+    updatedStatuses[index] = value;
+    setStatuses(updatedStatuses);
   };
+
+  const handleUpdate = async (index: number) => {
+    try {
+      const user = users[index];
+      await axiosInstance.put(`/users/${user._id}`, { role: roles[index], status: statuses[index] });
+      toast.success('User updated successfully.');
+    } catch (error) {
+      toast.error('Failed to update user.');
+    }
+  };
+
+  const handleAddUser = async () => {
+    try {
+      await axiosInstance.post('/users/signup', {
+        firstName: newFirstName,
+        lastName: newLastName,
+        email: newEmail,
+        password: newPassword,
+      });
+      toast.success('User created successfully.');
+      setShowAddUserForm(false);
+      setNewFirstName('');
+      setNewLastName('');
+      setNewEmail('');
+      setNewPassword('');
+    } catch (error) {
+      toast.error('Failed to create user.');
+    }
+  };
+
+  const filteredUsers = users.filter((user) => {
+    if (activeTab === 'active') return user.status === 'active';
+    if (activeTab === 'archived') return user.status === 'inactive';
+    const fullName = `${user.firstName?.toLowerCase() || ''} ${user.lastName?.toLowerCase() || ''}`;
+    return fullName.includes(searchQuery.toLowerCase());
+  });
 
   return (
     <BaseLayout>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <Card className="xl:col-span-2">
-          <CardHeader className="flex flex-row items-center">
-            <div className="grid gap-2">
+        <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
+          <div className="flex gap-2">
+            <TabsMenu activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <SearchBox
+              searchQuery={searchQuery}
+              showSearchBox={showSearchBox}
+              onSearchChange={setSearchQuery}
+              onToggleSearch={() => setShowSearchBox(!showSearchBox)}
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-7 gap-1">
+                  <ListFilter className="h-3.5 w-3.5" />
+                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filter</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuCheckboxItem checked>Active</DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button size="sm" className="h-7 gap-1" onClick={() => setShowAddUserForm(true)}>
+              <PlusCircle className="h-3.5 w-3.5" />
+              Add User
+            </Button>
+          </div>
+        </div>
+
+        {showAddUserForm ? (
+          <AddUserForm
+            newFirstName={newFirstName}
+            newLastName={newLastName}
+            newEmail={newEmail}
+            newPassword={newPassword}
+            onFirstNameChange={setNewFirstName}
+            onLastNameChange={setNewLastName}
+            onEmailChange={setNewEmail}
+            onPasswordChange={setNewPassword}
+            onAddUser={handleAddUser}
+            onCancel={() => setShowAddUserForm(false)}
+          />
+        ) : (
+          <Card className="xl:col-span-2">
+            <CardHeader className="flex flex-row items-center">
               <CardTitle>Users</CardTitle>
-              <CardDescription>Manage your users here.</CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user, index) => (
-                  <TableRow key={user._id || index}>
-                    <TableCell>
-                      <div className="font-medium">
-                        {user.firstName} {user.lastName}
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      <Select value={roles[index]} onValueChange={(value) => handleRoleChange(index, value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="user">User</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <Select value={statuses[index]} onValueChange={(value) => handleStatusChange(index, value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button size="sm" onClick={() => handleUpdate(index)}>
-                        Update
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <UserTable
+                users={filteredUsers}
+                roles={roles}
+                statuses={statuses}
+                onRoleChange={handleRoleChange}
+                onStatusChange={handleStatusChange}
+                onUpdate={handleUpdate}
+              />
+            </CardContent>
+          </Card>
+        )}
       </main>
     </BaseLayout>
   );
