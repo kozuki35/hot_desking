@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
-export const SearchBox = () => {
+export const TopSearchBox = () => {
   return (
     <div className="w-full flex-1">
       <form>

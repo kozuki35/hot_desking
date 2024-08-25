@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Clock, Home, LineChart, Menu, Package, Users } from 'lucide-react';
+import { Blocks, Clock, Home, LineChart, Menu, NotebookPen, Users } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { BrandInfoSheetMode } from '@/components/layout/BrandInfo';
 import { Button } from '@/components/ui/button';
@@ -25,20 +25,24 @@ const getLinks = (
     <>
       <Link to="/" className={getLinkStyle(pathname, '/')}>
         <Home className={iconStyle} />
-        Dashboard
+        <span>Dashboard</span>
       </Link>
       <Link to="/booking-history" className={getLinkStyle(pathname, '/booking-history')}>
         <Clock className={iconStyle} />
-        Booking History
+        <span>Booking History</span>
         <Badge className={badgeStyle}>6</Badge>
       </Link>
       <Link to="/booking" className={getLinkStyle(pathname, '/booking')}>
-        <Package className={iconStyle} />
-        Booking
+        <NotebookPen className={iconStyle} />
+        <span>Booking</span>
       </Link>
       <Link to="/user-management" className={getLinkStyle(pathname, '/user-management')}>
         <Users className={iconStyle} />
-        Users
+        <span>Users</span>
+      </Link>
+      <Link to="/desk-management" className={getLinkStyle(pathname, '/desk-management')}>
+        <Blocks className={iconStyle} />
+        <span>Desks</span>
       </Link>
       <Link to="/analytics" className={getLinkStyle(pathname, '/analytics')}>
         <LineChart className={iconStyle} />

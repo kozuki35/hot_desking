@@ -40,7 +40,6 @@ const UserManagement = () => {
   const [newPassword, setNewPassword] = useState('');
 
   const [showAddUserForm, setShowAddUserForm] = useState(false);
-  const [showSearchBox, setShowSearchBox] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -116,12 +115,7 @@ const UserManagement = () => {
             <TabsMenu activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <SearchBox
-              searchQuery={searchQuery}
-              showSearchBox={showSearchBox}
-              onSearchChange={setSearchQuery}
-              onToggleSearch={() => setShowSearchBox(!showSearchBox)}
-            />
+            <SearchBox searchQuery={searchQuery} onSearchChange={setSearchQuery} />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="h-7 gap-1">

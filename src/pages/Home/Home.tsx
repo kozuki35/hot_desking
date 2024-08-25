@@ -1,5 +1,5 @@
 import { BaseLayout } from '@/components/layout/BaseLayout';
-import DeskSelection from '../DeskSelection/DeskSelection';
+import DeskSelection from '@/pages/DeskSelection/DeskSelection';
 import { FC } from 'react';
 
 export const Dashboard: FC = () => {

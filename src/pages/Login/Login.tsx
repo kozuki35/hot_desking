@@ -51,7 +51,15 @@ const Login: FC = () => {
         </div>
         <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
+          <Input
+            id="password"
+            type="password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              e.key === 'Enter' ? handleLogin() : '';
+            }}
+          />
         </div>
         <div>
           <Button className="w-full" onClick={handleLogin}>

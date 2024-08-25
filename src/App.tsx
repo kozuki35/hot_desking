@@ -4,6 +4,7 @@ import UserProfile from '@/pages/User/UserProfile';
 import { Dashboard } from '@/pages/Home/Home';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/SignUp/SignUp';
+import DeskManagement from '@/pages/Desk/DeskManagement';
 
 const routes = (
   <Router>
@@ -17,6 +18,7 @@ const routes = (
       <Route path="/booking-history" element={<Dashboard />} />
       <Route path="/booking" element={<Dashboard />} />
       <Route path="/user-management" element={<UserManagement />} />
+      <Route path="/desk-management" element={<DeskManagement />} />
       <Route path="/analytics" element={<Dashboard />} />
     </Routes>
   </Router>
