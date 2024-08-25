@@ -107,7 +107,7 @@ const DeskManagement = () => {
             <Card x-chunk="dashboard-06-chunk-0">
               <CardHeader>
                 <CardTitle>Desks</CardTitle>
-                <CardDescription>Manage your desk and view their sales performance.</CardDescription>
+                <CardDescription>Manage your desk.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Spinner isLoading={isLoading} />
