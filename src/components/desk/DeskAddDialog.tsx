@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 interface Props {
   buttonRef: React.RefObject<HTMLButtonElement>;
@@ -54,7 +55,11 @@ const DeskAddDialog = (props: Props) => {
       }
     } catch (error) {
       console.error(`Error adding Desk: ${code}:`, error);
-      toast.error(`Error adding Desk: ${code}`);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.error || `Error adding Desk: ${code}`);
+      } else {
+        toast.error(`Error adding Desk: ${code}`);
+      }
     }
   };
 

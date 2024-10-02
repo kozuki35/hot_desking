@@ -19,6 +19,7 @@ import DeskEditDialog from '@/components/desk/DeskEditDialog';
 import DeskAddDialog from '@/components/desk/DeskAddDialog';
 import { Spinner } from '@/components/ui/spinner';
 import SearchBox from '@/components/user/SearchBox';
+import { Booking } from '../Booking/Bookings';
 
 export type Desk = {
   _id: string;
@@ -28,6 +29,7 @@ export type Desk = {
   location: string;
   status: string;
   created_at: string;
+  bookings?: Booking[];
 };
 
 const DeskManagement = () => {

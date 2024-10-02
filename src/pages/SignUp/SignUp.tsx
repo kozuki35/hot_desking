@@ -11,11 +11,51 @@ const SignUp: FC = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
   const [successMessage, setSuccessMessage] = useState(''); // State for success message
 
   const navigate = useNavigate();
 
+  // Password validation: at least 8 characters, including both letters and numbers
+  const isValidPassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  // Email validation: general pattern for valid email addresses
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Name validation: only allows letters, spaces, and hyphens
+  const isValidName = (name: string) => {
+    const nameRegex = /^[a-zA-Z\s\-]+$/;
+    return nameRegex.test(name);
+  };
+
   const handleSignUp = async () => {
+    // Reset error message
+    setErrorMessage('');
+
+    // Validate names
+    if (!isValidName(firstName) || !isValidName(lastName)) {
+      setErrorMessage('Names can only contain letters, spaces, and hyphens.');
+      return;
+    }
+
+    // Email validation
+    if (!isValidEmail(email)) {
+      setErrorMessage('Please enter a valid email address.');
+      return;
+    }
+
+    // Password validation
+    if (!isValidPassword(password)) {
+      setErrorMessage('Password must be at least 8 characters long and contain both letters and numbers.');
+      return;
+    }
+
     // Call Signup API
     try {
       const response = await axiosInstance.post('/users/signup', {
@@ -27,13 +67,15 @@ const SignUp: FC = () => {
 
       if (response.status === 201) {
         localStorage.setItem('token', response.data.token);
-        setSuccessMessage('Account created successfully! Redirecting to home page...'); // Set success message
+        setErrorMessage(''); // Clear error message if any
+        setSuccessMessage('Account created successfully! Redirecting to home page...');
         setTimeout(() => {
           navigate('/');
         }, 2000); // Redirect after 2 seconds
       }
     } catch (error) {
       console.error('Error during signup:', error);
+      setErrorMessage('An error occurred during signup. Please try again.');
     }
   };
 
@@ -44,6 +86,11 @@ const SignUp: FC = () => {
         <CardDescription>Enter your information to create an account</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
+        {errorMessage && (
+          <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+            {errorMessage}
+          </div>
+        )}
         {successMessage && (
           <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
             {successMessage}
@@ -76,9 +123,6 @@ const SignUp: FC = () => {
         <Button className="w-full" onClick={handleSignUp}>
           Create an account
         </Button>
-        {/* <Button variant="outline" className="w-full">
-          Sign up with GitHub
-        </Button> */}
         <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
           <Link to="/login" className="underline">
