@@ -28,9 +28,15 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
+    "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
   },
   "devDependencies": {
     "@types/node": "^22.1.0",
