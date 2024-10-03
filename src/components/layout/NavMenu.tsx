@@ -1,17 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Blocks, Clock, Home, LineChart, Menu, NotebookPen, Users } from 'lucide-react';
+import { Blocks, Clock, Home, Menu, NotebookPen, Users } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { BrandInfoSheetMode } from '@/components/layout/BrandInfo';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { isAdmin, isUser } from '@/lib/utils';
 
-const getLinks = (
-  pathname: string,
-  linkStyle: string,
-  linkSelectedStyle: string,
-  iconStyle: string,
-) => {
+const getLinks = (pathname: string, linkStyle: string, linkSelectedStyle: string, iconStyle: string) => {
   const isActiveLink = (currentPathname: string, targetPath: string) => {
     return currentPathname === targetPath ? true : false;
   };
@@ -26,13 +21,13 @@ const getLinks = (
         <Home className={iconStyle} />
         <span>Dashboard</span>
       </Link>
-      
-      {isUser() && 
-            <Link to="/my-booking" className={getLinkStyle(pathname, '/my-booking')}>
-            <Clock className={iconStyle} />
-            <span>My Booking</span>
-          </Link>
-      }
+
+      {isUser() && (
+        <Link to="/my-booking" className={getLinkStyle(pathname, '/my-booking')}>
+          <Clock className={iconStyle} />
+          <span>My Booking</span>
+        </Link>
+      )}
 
       {isAdmin() && (
         <>
