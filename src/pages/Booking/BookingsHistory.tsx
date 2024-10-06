@@ -7,9 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'react-toastify';
 import axiosInstance from '@/utils/axiosInstance';
 import { Spinner } from '@/components/ui/spinner';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, DropdownMenuCheckboxItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, ListFilter } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { MoreHorizontal } from 'lucide-react';
 import BookingEditDialog from '@/components/booking/BookingEditDialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export type Booking = {
   _id: string;
@@ -23,30 +24,26 @@ export type Booking = {
 
 const UserBookingHistory = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [currentTab, setCurrentTab] = useState<string>('all');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editBooking, setEditBooking] = useState<Booking | null>(null);
   const editDialogTriggerRef = useRef<HTMLButtonElement>(null);
-  const [statusFilter, setStatusFilter] = useState<string[]>([]); // Multi-select filter for statuses
+
+  const fetchUserBookings = async (status: string) => {
+    try {
+      setIsLoading(true);
+      const response = await axiosInstance.get(`/my-bookings?status=${status}`);  // Adjust to get user's own bookings
+      setBookings(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching user bookings:', error);
+      toast.error('Error fetching user bookings');
+    }
+  };
 
   useEffect(() => {
-    const fetchUserBookings = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.get(`/users/me/bookings`);  // Adjust to get user's own bookings
-        setBookings(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching user bookings:', error);
-        toast.error('Error fetching user bookings');
-      }
-    };
-
-    fetchUserBookings();
-  }, []);
-
-  const filteredBookings = bookings.filter((booking) => {
-    return statusFilter.length > 0 ? statusFilter.includes(booking.status.toLowerCase()) : true;
-  });
+    fetchUserBookings(currentTab);
+  }, [currentTab]);
 
   // Trigger edit dialog function
   const triggerEditDialog = (booking: Booking) => {
@@ -56,27 +53,31 @@ const UserBookingHistory = () => {
     }
   };
 
-  const toggleStatusFilter = (status: string) => {
-    setStatusFilter((prevStatus) =>
-      prevStatus.includes(status)
-        ? prevStatus.filter((s) => s !== status)
-        : [...prevStatus, status]
-    );
-  };
-
   const triggerDataRefresh = async () => {
-    try {
-      const response = await axiosInstance.get(`/users/me/bookings`);
-      setBookings(response.data);
-    } catch (error) {
-      console.error('Error refreshing user bookings:', error);
-      toast.error('Failed to refresh data');
-    }
+    fetchUserBookings(currentTab);
   };
 
   return (
     <BaseLayout>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <Tabs defaultValue="all">
+            <div className="flex items-center">
+              <TabsList>
+                <TabsTrigger value="all" onClick={() => setCurrentTab('all')}>
+                  All
+                </TabsTrigger>
+                <TabsTrigger value="active" onClick={() => setCurrentTab('active')}>
+                  Active
+                </TabsTrigger>
+                <TabsTrigger value="archived" onClick={() => setCurrentTab('archived')} className="hidden sm:flex">
+                  Archived
+                </TabsTrigger>
+                <TabsTrigger value="cancelled" onClick={() => setCurrentTab('cancelled')} className="hidden sm:flex">
+                  Cancelled
+                </TabsTrigger>
+              </TabsList>          
+            </div>
+            <TabsContent value={currentTab}>
         <Card>
           <CardHeader>
             <CardTitle>My Booking</CardTitle>
@@ -84,38 +85,6 @@ const UserBookingHistory = () => {
           </CardHeader>
           <CardContent>
             <Spinner isLoading={isLoading} />
-            <div className="flex items-center mb-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-7 gap-1">
-                    <ListFilter className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filter</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filter by Status</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={statusFilter.includes('active')}
-                    onCheckedChange={() => toggleStatusFilter('active')}
-                  >
-                    Active
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={statusFilter.includes('archived')}
-                    onCheckedChange={() => toggleStatusFilter('archived')}
-                  >
-                    Archived
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={statusFilter.includes('cancelled')}
-                    onCheckedChange={() => toggleStatusFilter('cancelled')}
-                  >
-                    Cancelled
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
             <Table className={isLoading ? 'hidden' : ''}>
               <TableHeader>
                 <TableRow>
@@ -129,7 +98,7 @@ const UserBookingHistory = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBookings.map((booking) => (
+                {bookings.map((booking) => (
                   <TableRow key={booking._id}>
                     <TableCell>
                       {booking.user.firstName} {booking.user.lastName}
@@ -166,15 +135,18 @@ const UserBookingHistory = () => {
           </CardContent>
           <CardFooter>
             <div className="text-xs text-muted-foreground">
-              Showing <strong>{isLoading ? '0' : filteredBookings.length}</strong> bookings
+              Showing <strong>{isLoading ? '0' : bookings.length}</strong> bookings
             </div>
           </CardFooter>
         </Card>
         <BookingEditDialog
+          isMyBooking={true}
           buttonRef={editDialogTriggerRef}
           booking={editBooking || undefined}
           triggerDataRefresh={triggerDataRefresh}
         />
+        </TabsContent>    
+      </Tabs> 
       </main>
     </BaseLayout>
   );

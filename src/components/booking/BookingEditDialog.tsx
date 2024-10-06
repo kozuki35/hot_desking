@@ -19,6 +19,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import { AxiosError } from 'axios';
 
 interface Props {
+  isMyBooking: boolean;
   buttonRef: React.RefObject<HTMLButtonElement>;
   booking?: Booking;
   triggerDataRefresh: () => void;
@@ -43,7 +44,8 @@ const BookingEditDialog = (props: Props) => {
   const handleUpdate = async () => {
     try {
       const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); // Convert the date to the required format
-      const response = await axiosInstance.put(`/bookings/${props.booking?._id}`, {
+      const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`
+      const response = await axiosInstance.put(updateUrl, {
         booking_date: formattedDate,
         time_slot: {
           value: timeSlot,

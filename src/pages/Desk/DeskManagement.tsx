@@ -149,7 +149,7 @@ const DeskManagement = () => {
                           <Badge variant="outline">{desk.status}</Badge>
                         </TableCell>
                         <TableCell className="hidden md:table-cell">{desk.description}</TableCell>
-                        <TableCell className="hidden md:table-cell">{desk.created_at}</TableCell>
+                        <TableCell className="hidden md:table-cell">{new Date(desk.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

@@ -2,7 +2,6 @@ import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BrandInfo } from '@/components/layout/BrandInfo';
 import { NavMenuItems, NavMenuItemsSheetMode } from '@/components/layout/NavMenu';
-import { TopSearchBox } from './TopSearchBox';
 import { AccountMenu } from './AccoutMenu';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,8 +31,9 @@ export const BaseLayout: FC<Props> = ({ children }: Props) => {
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <NavMenuItemsSheetMode />
-          <TopSearchBox />
-          <AccountMenu />
+          <div className="ml-auto">
+            <AccountMenu />
+          </div>
         </header>
         {children}
         <ToastContainer theme="light" />

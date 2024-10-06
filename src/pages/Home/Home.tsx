@@ -8,7 +8,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { DatePicker } from '@/components/ui/date-picker';
 import { formatDateToLocalYYYYMMDD } from '@/lib/utils';
 
-export const Dashboard: FC = () => {
+export const MakeBooking: FC = () => {
   const [desks, setDesks] = useState<Desk[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);

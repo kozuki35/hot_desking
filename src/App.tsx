@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserManagement from '@/pages/User/UserManagement';
 import UserProfile from '@/pages/User/UserProfile';
-import { Dashboard } from '@/pages/Home/Home';
+import { MakeBooking } from '@/pages/Home/Home';
 import Login from '@/pages/Login/Login';
 import SignUp from '@/pages/SignUp/SignUp';
 import DeskManagement from '@/pages/Desk/DeskManagement';
@@ -17,12 +17,12 @@ const routes = (
       <Route path="/profile" element={<UserProfile />} />
 
       {/* Nav Menu Items */}
-      <Route path="/" element={<ProtectedRoute element={<Dashboard />} requiredRoles={["admin", "user"]} />} />
+      <Route path="/" element={<ProtectedRoute element={<MakeBooking />} requiredRoles={["admin", "user"]} />} />
       <Route path="/my-booking" element={<ProtectedRoute element={<UserBookingHistory />} requiredRoles={["user"]} />} />
       <Route path="/booking" element={<ProtectedRoute element={<Bookings />} requiredRoles={["admin"]} />} />
       <Route path="/user-management" element={<ProtectedRoute element={<UserManagement />} requiredRoles={["admin"]} />} />
       <Route path="/desk-management" element={<ProtectedRoute element={<DeskManagement />} requiredRoles={["admin"]} />} />
-      {/* <Route path="/analytics" element={<ProtectedRoute element={<Dashboard />} requiredRole="admin" />} /> */}
+      {/* <Route path="/analytics" element={<ProtectedRoute element={<MakeBooking />} requiredRole="admin" />} /> */}
     </Routes>
   </Router>
 );

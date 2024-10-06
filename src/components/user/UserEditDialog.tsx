@@ -118,7 +118,6 @@ const UserEditDialog = (props: Props) => {
               <SelectContent className="col-span-3">
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="inactive">Inactive</SelectItem>
-                <SelectItem value="suspended">Suspended</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -133,7 +132,6 @@ const UserEditDialog = (props: Props) => {
               <SelectContent className="col-span-3">
                 <SelectItem value="admin">Admin</SelectItem>
                 <SelectItem value="user">User</SelectItem>
-                <SelectItem value="guest">Guest</SelectItem>
               </SelectContent>
             </Select>
           </div>

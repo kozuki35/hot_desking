@@ -19,7 +19,7 @@ const getLinks = (pathname: string, linkStyle: string, linkSelectedStyle: string
     <>
       <Link to="/" className={getLinkStyle(pathname, '/')}>
         <Home className={iconStyle} />
-        <span>Dashboard</span>
+        <span>Make Booking</span>
       </Link>
 
       {isUser() && (

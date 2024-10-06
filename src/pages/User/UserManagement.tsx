@@ -125,7 +125,7 @@ const UserManagement = () => {
                         <TableCell>
                           <Badge variant="outline">{user.status}</Badge>
                         </TableCell>
-                        <TableCell>{user.created_at}</TableCell>
+                        <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                               <DropdownMenuTrigger asChild>
