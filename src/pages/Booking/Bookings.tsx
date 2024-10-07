@@ -96,7 +96,7 @@ const Bookings = () => {
             <TabsContent value={currentTab}>
             <Card>
               <CardHeader>
-                <CardTitle>Booking History</CardTitle>
+                <CardTitle>Booking List</CardTitle>
                 <CardDescription>View and manage all desk bookings.</CardDescription>
               </CardHeader>
               <CardContent>

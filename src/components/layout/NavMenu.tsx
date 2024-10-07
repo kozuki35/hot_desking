@@ -33,15 +33,15 @@ const getLinks = (pathname: string, linkStyle: string, linkSelectedStyle: string
         <>
           <Link to="/booking" className={getLinkStyle(pathname, '/booking')}>
             <NotebookPen className={iconStyle} />
-            <span>Booking</span>
+            <span>Booking List</span>
           </Link>
           <Link to="/user-management" className={getLinkStyle(pathname, '/user-management')}>
             <Users className={iconStyle} />
-            <span>Users</span>
+            <span>User Management</span>
           </Link>
           <Link to="/desk-management" className={getLinkStyle(pathname, '/desk-management')}>
             <Blocks className={iconStyle} />
-            <span>Desks</span>
+            <span>Desk Management</span>
           </Link>
           {/* <Link to="/analytics" className={getLinkStyle(pathname, '/analytics')}>
             <LineChart className={iconStyle} />

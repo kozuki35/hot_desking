@@ -31,7 +31,6 @@ export const AccountMenu = () => {
         <Link to={`/profile`}>
           <DropdownMenuItem>Profile</DropdownMenuItem>
         </Link>
-        <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={logout}>Logout</DropdownMenuItem>
       </DropdownMenuContent>

@@ -39,7 +39,14 @@ const DeskAddDialog = (props: Props) => {
   }, [isOpen]);
 
   const handleAddDesk = async () => {
+    // Validate required fields
+    if (!code || !name || !location || !status) {
+      toast.error('Please fill in all required fields (Code, Name, Location, Status)');
+      return;
+    }
+
     try {
+      // Submit desk information to backend
       const response = await axiosInstance.post(`/desks`, {
         code: code,
         name: name,
@@ -48,15 +55,20 @@ const DeskAddDialog = (props: Props) => {
         description: description,
       });
 
+      // Handle success response
       if (response.status === 201) {
         toast.success(`Desk: ${response.data.desk.code} added successfully`);
         props.buttonRef.current ? props.buttonRef.current.click() : '';
         props.triggerDataRefresh();
       }
     } catch (error) {
-      console.error(`Error adding Desk: ${code}:`, error);
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.error || `Error adding Desk: ${code}`);
+        // Handle errors from backend
+        if (error.response?.status === 400 && error.response?.data.message === 'Desk code already exists. Please choose a different code.') {
+          toast.error('Desk code already exists. Please choose a different code.');
+        } else {
+          toast.error(error.response?.data.message || `Error adding Desk: ${code}`);
+        }
       } else {
         toast.error(`Error adding Desk: ${code}`);
       }
@@ -80,11 +92,23 @@ const DeskAddDialog = (props: Props) => {
             <Label htmlFor="code" className="text-right">
               Code
             </Label>
-            <Input id="code" value={code} className="col-span-3" onChange={(e) => setCode(e.target.value)} />
+            <Input
+              id="code"
+              value={code}
+              className="col-span-3"
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input id="name" value={name} className="col-span-3" onChange={(e) => setName(e.target.value)} />
+            <Input
+              id="name"
+              value={name}
+              className="col-span-3"
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">
@@ -125,7 +149,7 @@ const DeskAddDialog = (props: Props) => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={() => handleAddDesk()}>
+          <Button type="submit" onClick={handleAddDesk}>
             Save changes
           </Button>
         </DialogFooter>
