@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns'; // Add `parseISO` to handle date parsing
+import { format, parseISO } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -44,7 +44,7 @@ const BookingEditDialog = (props: Props) => {
   const handleUpdate = async () => {
     try {
       const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); // Convert the date to the required format
-      const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`
+      const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`;
       const response = await axiosInstance.put(updateUrl, {
         booking_date: formattedDate,
         time_slot: {

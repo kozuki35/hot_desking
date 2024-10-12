@@ -64,7 +64,10 @@ const DeskAddDialog = (props: Props) => {
     } catch (error) {
       if (error instanceof AxiosError) {
         // Handle errors from backend
-        if (error.response?.status === 400 && error.response?.data.message === 'Desk code already exists. Please choose a different code.') {
+        if (
+          error.response?.status === 400 &&
+          error.response?.data.message === 'Desk code already exists. Please choose a different code.'
+        ) {
           toast.error('Desk code already exists. Please choose a different code.');
         } else {
           toast.error(error.response?.data.message || `Error adding Desk: ${code}`);
@@ -92,23 +95,13 @@ const DeskAddDialog = (props: Props) => {
             <Label htmlFor="code" className="text-right">
               Code
             </Label>
-            <Input
-              id="code"
-              value={code}
-              className="col-span-3"
-              onChange={(e) => setCode(e.target.value)}
-            />
+            <Input id="code" value={code} className="col-span-3" onChange={(e) => setCode(e.target.value)} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              value={name}
-              className="col-span-3"
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input id="name" value={name} className="col-span-3" onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">

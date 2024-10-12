@@ -70,40 +70,40 @@ const Bookings = () => {
   };
 
   const triggerDataRefresh = async () => {
-    fetchBookings(currentTab)
+    fetchBookings(currentTab);
   };
 
   return (
     <BaseLayout>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
         <Tabs defaultValue="all">
-            <div className="flex items-center">
-              <TabsList>
-                <TabsTrigger value="all" onClick={() => setCurrentTab('all')}>
-                  All
-                </TabsTrigger>
-                <TabsTrigger value="active" onClick={() => setCurrentTab('active')}>
-                  Active
-                </TabsTrigger>
-                <TabsTrigger value="archived" onClick={() => setCurrentTab('archived')} className="hidden sm:flex">
-                  Archived
-                </TabsTrigger>
-                <TabsTrigger value="cancelled" onClick={() => setCurrentTab('cancelled')} className="hidden sm:flex">
-                  Cancelled
-                </TabsTrigger>
-              </TabsList>          
-              <div className="ml-auto flex items-center gap-2">
-                <SearchBox searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-              </div>            
+          <div className="flex items-center">
+            <TabsList>
+              <TabsTrigger value="all" onClick={() => setCurrentTab('all')}>
+                All
+              </TabsTrigger>
+              <TabsTrigger value="active" onClick={() => setCurrentTab('active')}>
+                Active
+              </TabsTrigger>
+              <TabsTrigger value="archived" onClick={() => setCurrentTab('archived')} className="hidden sm:flex">
+                Archived
+              </TabsTrigger>
+              <TabsTrigger value="cancelled" onClick={() => setCurrentTab('cancelled')} className="hidden sm:flex">
+                Cancelled
+              </TabsTrigger>
+            </TabsList>
+            <div className="ml-auto flex items-center gap-2">
+              <SearchBox searchQuery={searchQuery} onSearchChange={setSearchQuery} />
             </div>
-            <TabsContent value={currentTab}>
+          </div>
+          <TabsContent value={currentTab}>
             <Card>
               <CardHeader>
                 <CardTitle>Booking List</CardTitle>
                 <CardDescription>View and manage all desk bookings.</CardDescription>
               </CardHeader>
               <CardContent>
-                <Spinner isLoading={isLoading} />           
+                <Spinner isLoading={isLoading} />
                 <Table className={isLoading ? 'hidden' : ''}>
                   <TableHeader>
                     <TableRow>
@@ -164,12 +164,11 @@ const Bookings = () => {
               booking={editBooking || undefined}
               triggerDataRefresh={triggerDataRefresh}
             />
-          </TabsContent>    
-        </Tabs>       
+          </TabsContent>
+        </Tabs>
       </main>
     </BaseLayout>
   );
 };
 
 export default Bookings;
-

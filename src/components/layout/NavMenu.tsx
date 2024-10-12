@@ -43,10 +43,6 @@ const getLinks = (pathname: string, linkStyle: string, linkSelectedStyle: string
             <Blocks className={iconStyle} />
             <span>Desk Management</span>
           </Link>
-          {/* <Link to="/analytics" className={getLinkStyle(pathname, '/analytics')}>
-            <LineChart className={iconStyle} />
-            Analytics
-          </Link> */}
         </>
       )}
     </>

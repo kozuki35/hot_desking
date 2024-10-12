@@ -85,12 +85,7 @@ const DeskEditDialog = (props: Props) => {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              value={name}
-              className="col-span-3"
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input id="name" value={name} className="col-span-3" onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">

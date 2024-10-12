@@ -25,7 +25,7 @@ const UserAddDialog = (props: Props) => {
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>(''); 
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const UserAddDialog = (props: Props) => {
     setLastName('');
     setEmail('');
     setPassword('');
-    setErrorMessage(''); 
+    setErrorMessage('');
   }, [isOpen]);
 
   // Password validation: at least 8 characters, including both letters and numbers
@@ -118,24 +118,50 @@ const UserAddDialog = (props: Props) => {
             </div>
           )}
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="firstName" className="text-right">First Name</Label>
-            <Input id="firstName" value={firstName} className="col-span-3" onChange={(e) => setFirstName(e.target.value)} />
+            <Label htmlFor="firstName" className="text-right">
+              First Name
+            </Label>
+            <Input
+              id="firstName"
+              value={firstName}
+              className="col-span-3"
+              onChange={(e) => setFirstName(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="lastName" className="text-right">Last Name</Label>
-            <Input id="lastName" value={lastName} className="col-span-3" onChange={(e) => setLastName(e.target.value)} />
+            <Label htmlFor="lastName" className="text-right">
+              Last Name
+            </Label>
+            <Input
+              id="lastName"
+              value={lastName}
+              className="col-span-3"
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">Email</Label>
+            <Label htmlFor="email" className="text-right">
+              Email
+            </Label>
             <Input id="email" value={email} className="col-span-3" onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="password" className="text-right">Password</Label>
-            <Input id="password" type="password" value={password} className="col-span-3" onChange={(e) => setPassword(e.target.value)} />
+            <Label htmlFor="password" className="text-right">
+              Password
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              className="col-span-3"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={handleAddUser}>Save changes</Button>
+          <Button type="submit" onClick={handleAddUser}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

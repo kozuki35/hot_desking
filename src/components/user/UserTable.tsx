@@ -3,7 +3,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { User } from '@/pages/User/UserManagement';
 
-
 type UserTableProps = {
   users: User[];
   roles: string[];

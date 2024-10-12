@@ -12,7 +12,15 @@ import SearchBox from '@/components/user/SearchBox';
 import { Spinner } from '@/components/ui/spinner';
 import UserEditDialog from '@/components/user/UserEditDialog';
 import UserAddDialog from '@/components/user/UserAddDialog';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export type User = {
   _id: string;
@@ -56,17 +64,15 @@ const UserManagement = () => {
   const filteredUsers = () => {
     return users.filter((user) => {
       const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-      const matchesSearchQuery = fullName.includes(searchQuery.toLowerCase()); 
+      const matchesSearchQuery = fullName.includes(searchQuery.toLowerCase());
       const matchesRole = roleFilter.length === 0 || roleFilter.includes(user.role);
-  
+
       return matchesSearchQuery && matchesRole;
     });
   };
 
   const toggleRoleFilter = (role: string) => {
-    setRoleFilter((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-    );
+    setRoleFilter((prev) => (prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]));
   };
 
   const triggerDataRefresh = () => {
@@ -164,17 +170,17 @@ const UserManagement = () => {
                         <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button aria-haspopup="true" size="icon" variant="ghost">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                  <span className="sr-only">Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => triggerEditDialog(user)}>Edit</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button aria-haspopup="true" size="icon" variant="ghost">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem onClick={() => triggerEditDialog(user)}>Edit</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))}

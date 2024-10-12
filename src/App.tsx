@@ -17,12 +17,20 @@ const routes = (
       <Route path="/profile" element={<UserProfile />} />
 
       {/* Nav Menu Items */}
-      <Route path="/" element={<ProtectedRoute element={<MakeBooking />} requiredRoles={["admin", "user"]} />} />
-      <Route path="/my-booking" element={<ProtectedRoute element={<UserBookingHistory />} requiredRoles={["user"]} />} />
-      <Route path="/booking" element={<ProtectedRoute element={<Bookings />} requiredRoles={["admin"]} />} />
-      <Route path="/user-management" element={<ProtectedRoute element={<UserManagement />} requiredRoles={["admin"]} />} />
-      <Route path="/desk-management" element={<ProtectedRoute element={<DeskManagement />} requiredRoles={["admin"]} />} />
-      {/* <Route path="/analytics" element={<ProtectedRoute element={<MakeBooking />} requiredRole="admin" />} /> */}
+      <Route path="/" element={<ProtectedRoute element={<MakeBooking />} requiredRoles={['admin', 'user']} />} />
+      <Route
+        path="/my-booking"
+        element={<ProtectedRoute element={<UserBookingHistory />} requiredRoles={['user']} />}
+      />
+      <Route path="/booking" element={<ProtectedRoute element={<Bookings />} requiredRoles={['admin']} />} />
+      <Route
+        path="/user-management"
+        element={<ProtectedRoute element={<UserManagement />} requiredRoles={['admin']} />}
+      />
+      <Route
+        path="/desk-management"
+        element={<ProtectedRoute element={<DeskManagement />} requiredRoles={['admin']} />}
+      />
     </Routes>
   </Router>
 );
