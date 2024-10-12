@@ -32,8 +32,14 @@ const UserBookingHistory = () => {
   const fetchUserBookings = async (status: string) => {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(`/my-bookings?status=${status}`);  // Adjust to get user's own bookings
-      setBookings(response.data);
+      const response = await axiosInstance.get(`/my-bookings?status=${status}`); 
+      
+      // Sort bookings by booking_date in ascending order
+      const sortedBookings = response.data.sort(
+        (a: Booking, b: Booking) => new Date(a.booking_date).getTime() - new Date(b.booking_date).getTime()
+      );
+
+      setBookings(sortedBookings);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching user bookings:', error);

@@ -3,7 +3,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Button } from '@/components/ui/button';
 import { BaseLayout } from '@/components/layout/BaseLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { ListFilter, MoreHorizontal, PlusCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ import SearchBox from '@/components/user/SearchBox';
 import { Spinner } from '@/components/ui/spinner';
 import UserEditDialog from '@/components/user/UserEditDialog';
 import UserAddDialog from '@/components/user/UserAddDialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export type User = {
   _id: string;
@@ -33,6 +33,7 @@ const UserManagement = () => {
   const addDialogTriggerRef = useRef<HTMLButtonElement>(null);
   const [dataRefresh, setDataRefresh] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchUsers = async (status: string) => {
@@ -52,11 +53,21 @@ const UserManagement = () => {
     fetchUsers(currentTab);
   }, [currentTab, dataRefresh]);
 
-  const filteredUsers = () =>
-    users.filter((user) => {
+  const filteredUsers = () => {
+    return users.filter((user) => {
       const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-      return fullName.includes(searchQuery.toLowerCase());
+      const matchesSearchQuery = fullName.includes(searchQuery.toLowerCase()); 
+      const matchesRole = roleFilter.length === 0 || roleFilter.includes(user.role);
+  
+      return matchesSearchQuery && matchesRole;
     });
+  };
+
+  const toggleRoleFilter = (role: string) => {
+    setRoleFilter((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    );
+  };
 
   const triggerDataRefresh = () => {
     setDataRefresh(!dataRefresh);
@@ -89,6 +100,31 @@ const UserManagement = () => {
             </TabsList>
             <div className="ml-auto flex items-center gap-2">
               <SearchBox placeholder="Filter by name" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-7 gap-1">
+                    <ListFilter className="h-3.5 w-3.5" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filter</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filter by Role</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={roleFilter.includes('admin')}
+                    onCheckedChange={() => toggleRoleFilter('admin')}
+                  >
+                    Admin
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={roleFilter.includes('user')}
+                    onCheckedChange={() => toggleRoleFilter('user')}
+                  >
+                    User
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Button size="sm" className="h-7 gap-1" onClick={triggerAddDialog}>
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add User</span>

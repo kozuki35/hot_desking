@@ -53,10 +53,13 @@ const Bookings = () => {
     fetchBookings(currentTab);
   }, [currentTab]);
 
-  const filteredBookings = bookings.filter((booking) => {
-    const userName = `${booking.user.firstName} ${booking.user.lastName}`.toLowerCase();
-    return userName.includes(searchQuery.toLowerCase());
-  });
+  const filteredBookings = bookings
+    .filter((booking) => {
+      const userName = `${booking.user.firstName} ${booking.user.lastName}`.toLowerCase();
+      return userName.includes(searchQuery.toLowerCase());
+    })
+    // Sort bookings by booking_date in ascending order
+    .sort((a, b) => new Date(a.booking_date).getTime() - new Date(b.booking_date).getTime());
 
   // Trigger edit dialog function
   const triggerEditDialog = (booking: Booking) => {
@@ -169,3 +172,4 @@ const Bookings = () => {
 };
 
 export default Bookings;
+

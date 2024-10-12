@@ -39,6 +39,12 @@ const DeskEditDialog = (props: Props) => {
   }, [props, isOpen]);
 
   const handleUpdate = async () => {
+    // Validate required fields
+    if (!name || !location || !status) {
+      toast.error('Please fill in all required fields (Name, Location, Status)');
+      return;
+    }
+
     try {
       const response = await axiosInstance.put(`/desks/${props.desk?._id}`, {
         name: name,
@@ -79,7 +85,12 @@ const DeskEditDialog = (props: Props) => {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input id="name" value={name} className="col-span-3" onChange={(e) => setName(e.target.value)} />
+            <Input
+              id="name"
+              value={name}
+              className="col-span-3"
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="location" className="text-right">

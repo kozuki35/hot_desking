@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import axiosInstance from '@/utils/axiosInstance';
+import { AxiosError } from 'axios';
 import { FC, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -74,8 +75,17 @@ const SignUp: FC = () => {
         }, 2000); // Redirect after 2 seconds
       }
     } catch (error) {
-      console.error('Error during signup:', error);
-      setErrorMessage('An error occurred during signup. Please try again.');
+      if (error instanceof AxiosError) {
+        // Check if the error is related to duplicate email
+        if (error.response && error.response.status === 400) {
+          setErrorMessage('Email address already exists. Please use a different email.');
+        } else {
+          setErrorMessage('An error occurred during signup. Please try again.');
+        }
+      } else {
+        console.error('Unexpected error:', error);
+        setErrorMessage('An unexpected error occurred. Please try again.');
+      }
     }
   };
 
