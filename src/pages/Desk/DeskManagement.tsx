@@ -116,9 +116,6 @@ const DeskManagement = () => {
                 <Table className={isLoading ? 'hidden' : ''}>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="hidden w-[100px] sm:table-cell">
-                        <span className="sr-only">Image</span>
-                      </TableHead>
                       <TableHead>Code</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Location</TableHead>
@@ -132,16 +129,7 @@ const DeskManagement = () => {
                   </TableHeader>
                   <TableBody>
                     {filteredDesks().map((desk, index) => (
-                      <TableRow key={desk._id || index}>
-                        <TableCell className="hidden sm:table-cell">
-                          <img
-                            alt="Desk image"
-                            className="aspect-square rounded-md object-cover"
-                            height="64"
-                            src="/vite.svg"
-                            width="64"
-                          />
-                        </TableCell>
+                      <TableRow key={desk._id || index}>                       
                         <TableCell className="font-medium">{desk.code}</TableCell>
                         <TableCell>{desk.name}</TableCell>
                         <TableCell>{desk.location}</TableCell>

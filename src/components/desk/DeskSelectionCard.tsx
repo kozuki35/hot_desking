@@ -1,10 +1,10 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
-import { Desk } from '../Desk/DeskManagement';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
+import { Desk } from '@/pages/Desk/DeskManagement';
 
 interface Props {
   desk: Desk;
@@ -19,12 +19,14 @@ const DeskSelectionCard = (props: Props) => {
   const user = JSON.parse(localStorage.getItem('user') || '');
 
   useEffect(() => {
+    // disable the booked timeslot from others
     const shouldDisableBooking = (timeSlotType: string) =>
       props.desk.bookings?.some(
         (booking) =>
           booking.time_slot.value === timeSlotType && booking.status === 'active' && booking.user !== user.id,
       );
 
+    // highlight the booked timeslot from logged in user
     const bookedSlots =
       props.desk.bookings?.map((booking) => {
         if (booking.user === user.id && booking.status === 'active') {
@@ -38,6 +40,7 @@ const DeskSelectionCard = (props: Props) => {
     setShouldDisableAfternoonBooking(shouldDisableBooking('afternoon') || false);
   }, [props.bookingDate, props.desk, user.id]);
 
+  // timeslot background changes with booking status
   const onTimeSlotValuesChange = (values: string[]) => {
     // Calculate the canceled slots by comparing the old and new selected time slots
     const canceledSlotValues = selectedTimeSlots.filter((item) => !values.includes(item));

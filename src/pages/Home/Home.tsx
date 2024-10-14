@@ -1,12 +1,12 @@
 import { BaseLayout } from '@/components/layout/BaseLayout';
 import { FC, useCallback, useEffect, useState } from 'react';
-import DeskSelectionCard from '@/pages/DeskSelectionCard/DeskSelectionCard';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
 import { Desk } from '../Desk/DeskManagement';
 import { Spinner } from '@/components/ui/spinner';
 import { DatePicker } from '@/components/ui/date-picker';
 import { formatDateToLocalYYYYMMDD } from '@/lib/utils';
+import DeskSelectionCard from '@/components/desk/DeskSelectionCard';
 
 export const MakeBooking: FC = () => {
   const [desks, setDesks] = useState<Desk[]>([]);
