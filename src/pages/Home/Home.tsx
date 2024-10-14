@@ -37,8 +37,9 @@ export const MakeBooking: FC = () => {
         <div className="flex lg:flex-row sm:flex-col justify-between ">
           <div className="items-center">
             <h1 className="text-lg font-semibold md:text-2xl">Make a booking</h1>
+            <span className="text-sm text-muted-foreground">Click the time slot to make/cancel a booking.</span>
           </div>
-          <div className="items-center">
+          <div className="flex items-center justify-center">
             <DatePicker onChange={setSelectedDate} disableBefore={true} />
           </div>
         </div>

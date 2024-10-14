@@ -5,6 +5,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
 import { Desk } from '@/pages/Desk/DeskManagement';
+import { Booking } from '@/pages/Booking/Bookings';
 
 interface Props {
   desk: Desk;
@@ -16,6 +17,7 @@ const DeskSelectionCard = (props: Props) => {
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
   const [shouldDisableMorningBooking, setShouldDisableMorningBooking] = useState<boolean>(false);
   const [shouldDisableAfternoonBooking, setShouldDisableAfternoonBooking] = useState<boolean>(false);
+  const [newBookings, setNewBookings] = useState<Booking[]>([]);
   const user = JSON.parse(localStorage.getItem('user') || '');
 
   useEffect(() => {
@@ -52,7 +54,9 @@ const DeskSelectionCard = (props: Props) => {
     if (canceledSlotValues.length > 0) {
       // Find the booking_id for each canceled slot and call cancelBooking
       canceledSlotValues.forEach((canceledSlot) => {
-        const canceledBooking = props.desk.bookings?.find(
+        let canceledBooking = props.desk.bookings?.find(
+          (booking) => booking.time_slot.value === canceledSlot && booking.user === user.id,
+        ) || newBookings?.find(
           (booking) => booking.time_slot.value === canceledSlot && booking.user === user.id,
         );
 
@@ -77,6 +81,7 @@ const DeskSelectionCard = (props: Props) => {
       });
 
       if (response.status === 201) {
+        setNewBookings([...newBookings, ...response.data.booking])
         toast.success(`Booking: ${desk.code} added successfully`);
       }
     } catch (error) {
