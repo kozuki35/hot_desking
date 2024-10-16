@@ -61,7 +61,7 @@ const DeskSelectionCard = (props: Props) => {
         );
 
         if (canceledBooking) {
-          cancelBooking(canceledBooking._id);
+          cancelBooking(canceledBooking._id, canceledSlot);
         }
       });
     }
@@ -73,6 +73,7 @@ const DeskSelectionCard = (props: Props) => {
   };
 
   const addBooking = async (timeSlotValues: string[]) => {
+    console.log(timeSlotValues)
     try {
       const response = await axiosInstance.post(`/bookings`, {
         deskId: desk._id,
@@ -82,7 +83,7 @@ const DeskSelectionCard = (props: Props) => {
 
       if (response.status === 201) {
         setNewBookings([...newBookings, ...response.data.booking])
-        toast.success(`Booking: ${desk.code} added successfully`);
+        toast.success(`Booking: ${desk.code} ${timeSlotValues} added successfully`);
       }
     } catch (error) {
       console.error(`Error adding Booking on Desk: ${desk.code}:`, error);
@@ -90,11 +91,11 @@ const DeskSelectionCard = (props: Props) => {
     }
   };
 
-  const cancelBooking = async (bookingId: string) => {
+  const cancelBooking = async (bookingId: string, canceledSlot: string) => {
     try {
       const response = await axiosInstance.delete(`/bookings/${bookingId}`);
       if (response.status === 200) {
-        toast.success(`Booking: ${desk.code} cancelled successfully`);
+        toast.success(`Booking: ${desk.code} ${canceledSlot} cancelled successfully`);
       }
     } catch (error) {
       console.error(`Error cancelling Booking on Desk: ${desk.code}:`, error);
