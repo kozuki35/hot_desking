@@ -12,8 +12,8 @@ const SignUp: FC = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // State for error message
-  const [successMessage, setSuccessMessage] = useState(''); // State for success message
+  const [errorMessage, setErrorMessage] = useState(''); 
+  const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -68,11 +68,11 @@ const SignUp: FC = () => {
 
       if (response.status === 201) {
         localStorage.setItem('token', response.data.token);
-        setErrorMessage(''); // Clear error message if any
+        setErrorMessage('');
         setSuccessMessage('Account created successfully! Redirecting to home page...');
         setTimeout(() => {
           navigate('/');
-        }, 2000); // Redirect after 2 seconds
+        }, 2000);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
