@@ -47,6 +47,8 @@ const BookingEditDialog = (props: Props) => {
       const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); 
       const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`;
       const response = await axiosInstance.put(updateUrl, {
+        user: props.booking?.user._id,
+        desk: props.booking?.desk._id,
         booking_date: formattedDate,
         time_slot: {
           value: timeSlot,
@@ -65,7 +67,7 @@ const BookingEditDialog = (props: Props) => {
       // handle error message from backend
       console.error('Error updating booking:', error);
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.error || 'Error updating booking');
+        toast.error(error.response?.data.message || 'Error updating booking');
       } else {
         toast.error('Error updating booking');
       }
@@ -87,7 +89,7 @@ const BookingEditDialog = (props: Props) => {
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="bookingDate" className="text-right">
-              Booking Date
+              Date
             </Label>
             <Input
               id="bookingDate"
@@ -110,7 +112,7 @@ const BookingEditDialog = (props: Props) => {
               </SelectTrigger>
               <SelectContent className="col-span-3">
                 <SelectItem value="morning">Morning (08:00 - 12:00)</SelectItem>
-                <SelectItem value="afternoon">Afternoon (13:00 - 17:00)</SelectItem>
+                <SelectItem value="afternoon">Afternoon (12:00 - 17:00)</SelectItem>
               </SelectContent>
             </Select>
           </div>

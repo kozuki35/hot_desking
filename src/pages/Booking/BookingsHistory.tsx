@@ -20,8 +20,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export type Booking = {
   _id: string;
-  user: { firstName: string; lastName: string };
-  desk: { code: string; name: string; location: string };
+  user: { _id: string; firstName: string; lastName: string };
+  desk: { _id: string; code: string; name: string; location: string };
   booking_date: string;
   time_slot: { value: string; start_time: string; end_time: string };
   status: string;
@@ -103,7 +103,7 @@ const UserBookingHistory = () => {
                       <TableHead>User</TableHead>
                       <TableHead>Desk</TableHead>
                       <TableHead>Location</TableHead>
-                      <TableHead>Booking Date</TableHead>
+                      <TableHead>Date</TableHead>
                       <TableHead>Time Slot</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Created At</TableHead>
