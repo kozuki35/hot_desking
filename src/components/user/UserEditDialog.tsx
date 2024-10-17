@@ -15,11 +15,11 @@ import { useEffect, useState } from 'react';
 import axiosInstance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import { User } from '../../pages/User/UserManagement'; // Make sure the User type is imported
+import { User } from '../../pages/User/UserManagement'; 
 
 interface Props {
   buttonRef: React.RefObject<HTMLButtonElement>;
-  user?: User; // Ensure user data is passed as a prop
+  user?: User;
   triggerDataRefresh: () => void;
 }
 
@@ -40,8 +40,9 @@ const UserEditDialog = (props: Props) => {
       setStatus(props.user.status || '');
       setRole(props.user.role || '');
     }
-  }, [props.user, isOpen]); // Runs when the dialog is opened and user data changes
+  }, [props.user, isOpen]);
 
+  // Handle user information update
   const handleUpdate = async () => {
     try {
       const response = await axiosInstance.put(`/users/${props.user?._id}`, {
@@ -58,6 +59,7 @@ const UserEditDialog = (props: Props) => {
       }
     } catch (error) {
       console.error(`Error updating User: ${props.user?.email}:`, error);
+      // Handle errors from backend
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.error || `Error updating User: ${props.user?.email}`);
       } else {

@@ -86,11 +86,12 @@ const UserAddDialog = (props: Props) => {
 
       if (response.status === 201) {
         toast.success(`User: ${response.data.user.email} added successfully`);
-        props.buttonRef.current?.click(); // Close dialog
-        props.triggerDataRefresh(); // Refresh data
+        props.buttonRef.current?.click(); 
+        props.triggerDataRefresh(); //
       }
     } catch (error) {
       console.error(`Error adding user: ${email}:`, error);
+      // Handle error from backend
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.error || `Error adding user: ${email}`);
       } else {

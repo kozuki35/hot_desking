@@ -13,6 +13,7 @@ export const MakeBooking: FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Fetch available desks based on desk status and selected date
   const fetchDesks = useCallback(async (deskStatus: string, queryDate: string) => {
     try {
       setIsLoading(true);
@@ -27,6 +28,7 @@ export const MakeBooking: FC = () => {
     }
   }, []);
 
+  // Effect hook to fetch desks whenever the selected date changes
   useEffect(() => {
     fetchDesks('active', formatDateToLocalYYYYMMDD(selectedDate || new Date()));
   }, [selectedDate, fetchDesks]);

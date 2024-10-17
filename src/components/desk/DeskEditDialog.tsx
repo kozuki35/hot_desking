@@ -25,12 +25,14 @@ interface Props {
 }
 
 const DeskEditDialog = (props: Props) => {
+  // State variables for form fields
   const [name, setName] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
 
+  // Populate the form fields with the current desk data
   useEffect(() => {
     setName(props.desk?.name || '');
     setLocation(props.desk?.location || '');
@@ -38,6 +40,7 @@ const DeskEditDialog = (props: Props) => {
     setDescription(props.desk?.description || '');
   }, [props, isOpen]);
 
+  // Handle desk update
   const handleUpdate = async () => {
     // Validate required fields
     if (!name || !location || !status) {
@@ -46,6 +49,7 @@ const DeskEditDialog = (props: Props) => {
     }
 
     try {
+      // Send a put request to update the desk
       const response = await axiosInstance.put(`/desks/${props.desk?._id}`, {
         name: name,
         location: location,
@@ -60,6 +64,7 @@ const DeskEditDialog = (props: Props) => {
       }
     } catch (error) {
       console.error(`Error updating Desk: ${props.desk?.code}:`, error);
+      // Handle error from backend
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.error || `Error updating Desk: ${props.desk?.code}`);
       } else {

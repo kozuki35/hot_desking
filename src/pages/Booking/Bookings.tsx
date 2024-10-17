@@ -41,7 +41,7 @@ const Bookings = () => {
     try {
       setIsLoading(true);
       const response = await axiosInstance.get(`/bookings?status=${status}`);
-      setBookings(response.data);
+      setBookings(response.data); // Update bookings state with fetched data
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -49,16 +49,17 @@ const Bookings = () => {
     }
   };
 
+  // Fetch bookings when the current tab changes
   useEffect(() => {
     fetchBookings(currentTab);
   }, [currentTab]);
 
+  // Filter bookings based on the search query and sort them by booking date
   const filteredBookings = bookings
     .filter((booking) => {
       const userName = `${booking.user.firstName} ${booking.user.lastName}`.toLowerCase();
       return userName.includes(searchQuery.toLowerCase());
     })
-    // Sort bookings by booking_date in ascending order
     .sort((a, b) => new Date(a.booking_date).getTime() - new Date(b.booking_date).getTime());
 
   // Trigger edit dialog function
@@ -69,6 +70,7 @@ const Bookings = () => {
     }
   };
 
+  // Trigger data refresh
   const triggerDataRefresh = async () => {
     fetchBookings(currentTab);
   };
@@ -76,6 +78,8 @@ const Bookings = () => {
   return (
     <BaseLayout>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+
+        {/* Tabs for filtering bookings by status */}
         <Tabs defaultValue="all">
           <div className="flex items-center">
             <TabsList>
@@ -92,6 +96,8 @@ const Bookings = () => {
                 Cancelled
               </TabsTrigger>
             </TabsList>
+
+            {/* Search box for filtering bookings by user name */}
             <div className="ml-auto flex items-center gap-2">
               <SearchBox searchQuery={searchQuery} onSearchChange={setSearchQuery} />
             </div>
@@ -117,6 +123,7 @@ const Bookings = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    {/* Loop through filtered bookings and display each booking */}
                     {filteredBookings.map((booking) => (
                       <TableRow key={booking._id}>
                         <TableCell>
@@ -153,6 +160,7 @@ const Bookings = () => {
                 </Table>
               </CardContent>
               <CardFooter>
+                {/* Display the total number of bookings */}
                 <div className="text-xs text-muted-foreground">
                   Showing <strong>{isLoading ? '0' : filteredBookings.length}</strong> bookings
                 </div>

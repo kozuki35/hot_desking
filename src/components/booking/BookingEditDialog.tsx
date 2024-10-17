@@ -31,7 +31,7 @@ const BookingEditDialog = (props: Props) => {
   const [status, setStatus] = useState<string>('active');
   const [isOpen, setIsOpen] = useState(false);
 
-  // When editing, make sure the booking date is formatted correctly in "yyyy-MM-dd"
+  // Populate the booking details
   useEffect(() => {
     if (props.booking) {
       const formattedDate = format(parseISO(props.booking.booking_date), 'yyyy-MM-dd'); // Parse and format the date
@@ -41,9 +41,10 @@ const BookingEditDialog = (props: Props) => {
     }
   }, [props.booking, isOpen]);
 
+  // Handle the update of the booking details
   const handleUpdate = async () => {
     try {
-      const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); // Convert the date to the required format
+      const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); 
       const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`;
       const response = await axiosInstance.put(updateUrl, {
         booking_date: formattedDate,
@@ -56,11 +57,12 @@ const BookingEditDialog = (props: Props) => {
       if (response.status === 200) {
         toast.success('Booking updated successfully');
         props.triggerDataRefresh(); // Refresh the booking data
-        setIsOpen(false); // Close the dialog after success
+        setIsOpen(false); 
       } else {
         throw new Error('Failed to update booking');
       }
     } catch (error) {
+      // handle error message from backend
       console.error('Error updating booking:', error);
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.error || 'Error updating booking');
@@ -90,12 +92,14 @@ const BookingEditDialog = (props: Props) => {
             <Input
               id="bookingDate"
               type="date"
-              value={bookingDate} // Correctly formatted booking date
+              value={bookingDate}
               className="col-span-3"
               min={new Date().toISOString().split('T')[0]}
               onChange={(e) => setBookingDate(e.target.value)}
             />
           </div>
+
+          {/* Select component for time slot */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="timeSlot" className="text-right">
               Time Slot
@@ -110,6 +114,8 @@ const BookingEditDialog = (props: Props) => {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Select component for status */}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="status" className="text-right">
               Status
@@ -121,7 +127,6 @@ const BookingEditDialog = (props: Props) => {
               <SelectContent className="col-span-3">
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
               </SelectContent>
             </Select>
           </div>

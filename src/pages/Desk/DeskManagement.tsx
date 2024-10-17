@@ -42,10 +42,12 @@ const DeskManagement = () => {
   const [dataRefresh, setDataRefresh] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch desks based on status and refresh trigger
   useEffect(() => {
     const fetchDesks = async (status: string) => {
       try {
         setIsLoading(true);
+        // Fetch desks from API
         const response = await axiosInstance.get(`/desks?status=${status}`);
         const desksData = response.data;
 
@@ -56,24 +58,28 @@ const DeskManagement = () => {
         toast.error('Error fetching desks');
       }
     };
-
+    // Fetch desks whenever currentTab or dataRefresh changes
     fetchDesks(currentTab);
   }, [currentTab, dataRefresh]);
 
+  // Filter desks based on search query
   const filteredDesks = () =>
     desks.filter((desk) => {
       return desk.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
+  // Trigger data refresh
   const triggerDataRefresh = () => {
     setDataRefresh(!dataRefresh);
   };
 
+  // Trigger edit dialog for a selected desk
   const triggerEditDialog = (desk: Desk) => {
     setEditDesk(desk);
     editDialogTriggerRef.current ? editDialogTriggerRef.current.click() : '';
   };
 
+  // Trigger add dialog for adding a new desk
   const triggerAddDialog = () => {
     addDialogTriggerRef.current ? addDialogTriggerRef.current.click() : '';
   };
@@ -83,6 +89,7 @@ const DeskManagement = () => {
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
         <Tabs defaultValue="all">
           <div className="flex items-center">
+            {/* Tab filter for different desk statuses */}
             <TabsList>
               <TabsTrigger value="all" onClick={() => setCurrentTab('all')}>
                 All
@@ -97,6 +104,8 @@ const DeskManagement = () => {
                 Archived
               </TabsTrigger>
             </TabsList>
+
+            {/* Search box and Add Desk button */}
             <div className="ml-auto flex items-center gap-2">
               <SearchBox placeholder="Filter by name" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
               <Button size="sm" className="h-7 gap-1" onClick={() => triggerAddDialog()}>
@@ -105,6 +114,8 @@ const DeskManagement = () => {
               </Button>
             </div>
           </div>
+
+          {/* Desk list based on the selected tab */}
           <TabsContent value={currentTab}>
             <Card x-chunk="dashboard-06-chunk-0">
               <CardHeader>
@@ -165,6 +176,8 @@ const DeskManagement = () => {
                 </div>
               </CardFooter>
             </Card>
+
+            {/* Desk edit and add dialogs */}
             <DeskEditDialog buttonRef={editDialogTriggerRef} desk={editDesk} triggerDataRefresh={triggerDataRefresh} />
             <DeskAddDialog buttonRef={addDialogTriggerRef} triggerDataRefresh={triggerDataRefresh} />
           </TabsContent>
