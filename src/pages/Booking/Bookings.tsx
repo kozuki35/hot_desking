@@ -70,6 +70,19 @@ const Bookings = () => {
     }
   };
 
+  const triggerCancelBooking = async (booking: Booking) => {
+    try {
+      const response = await axiosInstance.delete(`/bookings/${booking._id}`);
+      if (response.status === 200) {
+        toast.success(`Booking: ${booking.desk.code} at ${booking.time_slot.value} cancelled successfully`);
+        triggerDataRefresh();
+      }
+    } catch (error) {
+      console.error(`Error cancelling Booking on Desk: ${booking.desk.code}:`, error);
+      toast.error(`Error cancelling Booking on Desk: ${booking.desk.code}`);
+    }
+  };
+
   // Trigger data refresh
   const triggerDataRefresh = async () => {
     fetchBookings(currentTab);
@@ -141,18 +154,22 @@ const Bookings = () => {
                         </TableCell>
                         <TableCell>{new Date(booking.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button aria-haspopup="true" size="icon" variant="ghost">
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem onClick={() => triggerEditDialog(booking)}>Edit</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          {
+                            booking.status === 'active' &&
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button aria-haspopup="true" size="icon" variant="ghost">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                  <span className="sr-only">Toggle menu</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem onClick={() => triggerEditDialog(booking)}>Edit</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => triggerCancelBooking(booking)}>Cancel</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          }
                         </TableCell>
                       </TableRow>
                     ))}
