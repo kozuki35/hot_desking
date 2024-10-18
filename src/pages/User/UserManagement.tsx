@@ -43,6 +43,7 @@ const UserManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
 
+  // Fetch users from the backend based on the current tab
   useEffect(() => {
     const fetchUsers = async (status: string) => {
       try {
@@ -61,6 +62,7 @@ const UserManagement = () => {
     fetchUsers(currentTab);
   }, [currentTab, dataRefresh]);
 
+  // Filter users by search query and role
   const filteredUsers = () => {
     return users.filter((user) => {
       const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
@@ -71,6 +73,7 @@ const UserManagement = () => {
     });
   };
 
+  // Toggle role filters (admin or user)
   const toggleRoleFilter = (role: string) => {
     setRoleFilter((prev) => (prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]));
   };
@@ -91,6 +94,7 @@ const UserManagement = () => {
   return (
     <BaseLayout>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        {/* Tabs for filtering users by status (all, active, inactive) */}
         <Tabs defaultValue="all">
           <div className="flex items-center">
             <TabsList>
@@ -105,7 +109,9 @@ const UserManagement = () => {
               </TabsTrigger>
             </TabsList>
             <div className="ml-auto flex items-center gap-2">
+              {/* Search box for filtering users by name */}
               <SearchBox placeholder="Filter by name" searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+              {/* Dropdown menu to filter users by role */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="h-7 gap-1">
@@ -131,12 +137,14 @@ const UserManagement = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Button to open add user dialog */}
               <Button size="sm" className="h-7 gap-1" onClick={triggerAddDialog}>
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add User</span>
               </Button>
             </div>
           </div>
+          {/* Display list of users in a table */}
           <TabsContent value={currentTab}>
             <Card>
               <CardHeader>
