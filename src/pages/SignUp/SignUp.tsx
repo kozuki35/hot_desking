@@ -12,7 +12,7 @@ const SignUp: FC = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); 
+  const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
@@ -68,6 +68,7 @@ const SignUp: FC = () => {
 
       if (response.status === 201) {
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         setErrorMessage('');
         setSuccessMessage('Account created successfully! Redirecting to home page...');
         setTimeout(() => {
