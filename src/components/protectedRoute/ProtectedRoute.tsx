@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-// Simulated function to check if the user is an admin (get role from localStorage or context)
+// Get the user's role from local storage
 const getUserRole = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   return user?.role || ''; // default to 'user' if no role

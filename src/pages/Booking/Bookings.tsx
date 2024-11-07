@@ -19,6 +19,7 @@ import { MoreHorizontal } from 'lucide-react';
 import BookingEditDialog from '@/components/booking/BookingEditDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+// Define the Booking type
 export type Booking = {
   _id: string;
   user: { _id: string; firstName: string; lastName: string };
@@ -29,6 +30,7 @@ export type Booking = {
   created_at: string;
 };
 
+// Bookings component to display and manage all desk bookings
 const Bookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentTab, setCurrentTab] = useState<string>('all');
@@ -37,6 +39,7 @@ const Bookings = () => {
   const editDialogTriggerRef = useRef<HTMLButtonElement>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch bookings based on status
   const fetchBookings = async (status: string) => {
     try {
       setIsLoading(true);
@@ -70,8 +73,10 @@ const Bookings = () => {
     }
   };
 
+  // Trigger cancel booking function
   const triggerCancelBooking = async (booking: Booking) => {
     try {
+      // Call the delete booking API
       const response = await axiosInstance.delete(`/bookings/${booking._id}`);
       if (response.status === 200) {
         toast.success(`Booking: ${booking.desk.code} at ${booking.time_slot.value} cancelled successfully`);

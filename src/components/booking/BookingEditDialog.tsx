@@ -45,7 +45,8 @@ const BookingEditDialog = (props: Props) => {
   const handleUpdate = async () => {
     try {
       const formattedDate = format(new Date(bookingDate), 'yyyy-MM-dd'); 
-      const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`;
+      const updateUrl = props.isMyBooking ? `/my-bookings/${props.booking?._id}` : `/bookings/${props.booking?._id}`;// Update the booking based on the user's role
+      // Submit the updated booking details to the backend
       const response = await axiosInstance.put(updateUrl, {
         user: props.booking?.user._id,
         desk: props.booking?.desk._id,

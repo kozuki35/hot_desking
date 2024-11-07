@@ -18,6 +18,7 @@ import { MoreHorizontal } from 'lucide-react';
 import BookingEditDialog from '@/components/booking/BookingEditDialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+// Define the Booking type
 export type Booking = {
   _id: string;
   user: { _id: string; firstName: string; lastName: string };
@@ -28,6 +29,7 @@ export type Booking = {
   created_at: string;
 };
 
+// UserBookingHistory component to display and manage user bookings
 const UserBookingHistory = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentTab, setCurrentTab] = useState<string>('all');

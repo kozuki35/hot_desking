@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
+// Create an axios instance
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1',
   timeout: 10000,
@@ -8,8 +9,10 @@ const axiosInstance = axios.create({
   },
 });
 
+// Add a request interceptor
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // Add the Authorization header to the request
     const accessToken = localStorage.getItem('token');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -21,6 +24,7 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+// Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

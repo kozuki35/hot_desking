@@ -9,6 +9,7 @@ type SearchBoxProps = {
   onSearchChange: (query: string) => void;
 };
 
+// SearchBox component to search by name
 const SearchBox = ({ searchQuery, onSearchChange, placeholder }: SearchBoxProps) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

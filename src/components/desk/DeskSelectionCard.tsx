@@ -12,6 +12,7 @@ interface Props {
   bookingDate?: string;
 }
 
+// DeskSelectionCard component to display the desk details and booking time slots
 const DeskSelectionCard = (props: Props) => {
   const [desk] = useState<Desk>(props.desk);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
@@ -21,16 +22,17 @@ const DeskSelectionCard = (props: Props) => {
   const user = JSON.parse(localStorage.getItem('user') || '');
 
   useEffect(() => {
-    // disable the booked timeslot from others
     const shouldDisableBooking = (timeSlotType: string) =>
+      // Check if the booking is active and the user is not the logged in user
       props.desk.bookings?.some(
         (booking) =>
           booking.time_slot.value === timeSlotType && booking.status === 'active' && booking.user !== user.id,
       );
 
-    // highlight the booked timeslot from logged in user
+    // Set the selected time slots and disable the booked time slots
     const bookedSlots =
       props.desk.bookings?.map((booking) => {
+        // Check if the booking is active and the user is the logged in user
         if (booking.user === user.id && booking.status === 'active') {
           return booking.time_slot.value;
         } else {
@@ -42,7 +44,7 @@ const DeskSelectionCard = (props: Props) => {
     setShouldDisableAfternoonBooking(shouldDisableBooking('afternoon') || false);
   }, [props.bookingDate, props.desk, user.id]);
 
-  // timeslot background changes with booking status
+  // Function to handle the time slot values change
   const onTimeSlotValuesChange = (values: string[]) => {
     // Calculate the canceled slots by comparing the old and new selected time slots
     const canceledSlotValues = selectedTimeSlots.filter((item) => !values.includes(item));
@@ -75,6 +77,7 @@ const DeskSelectionCard = (props: Props) => {
   const addBooking = async (timeSlotValues: string[]) => {
     console.log(timeSlotValues)
     try {
+      // Call the add booking API
       const response = await axiosInstance.post(`/bookings`, {
         deskId: desk._id,
         bookingDate: props.bookingDate,
@@ -93,6 +96,7 @@ const DeskSelectionCard = (props: Props) => {
 
   const cancelBooking = async (bookingId: string, canceledSlot: string) => {
     try {
+      // Call the delete booking API
       const response = await axiosInstance.delete(`/bookings/${bookingId}`);
       if (response.status === 200) {
         toast.success(`Booking: ${desk.code} ${canceledSlot} cancelled successfully`);

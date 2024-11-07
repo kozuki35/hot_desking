@@ -22,6 +22,7 @@ interface Props {
   triggerDataRefresh: () => void;
 }
 
+// Component to add a new desk
 const DeskAddDialog = (props: Props) => {
   const [code, setCode] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -30,6 +31,7 @@ const DeskAddDialog = (props: Props) => {
   const [description, setDescription] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
 
+  // Reset the form when the dialog is closed/opened
   useEffect(() => {
     setCode('');
     setName('');
@@ -38,6 +40,7 @@ const DeskAddDialog = (props: Props) => {
     setDescription('');
   }, [isOpen]);
 
+  // Handle the addition of a new desk
   const handleAddDesk = async () => {
     // Validate required fields
     if (!code || !name || !location || !status) {
