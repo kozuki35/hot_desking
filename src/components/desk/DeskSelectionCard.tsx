@@ -39,8 +39,11 @@ const DeskSelectionCard = (props: Props) => {
           return '';
         }
       }) || [];
+    // Set the selected time slots and disable the booked time slots
     setSelectedTimeSlots(bookedSlots);
+    // Disable the booked time slots
     setShouldDisableMorningBooking(shouldDisableBooking('morning') || false);
+    // Disable the booked time slots
     setShouldDisableAfternoonBooking(shouldDisableBooking('afternoon') || false);
   }, [props.bookingDate, props.desk, user.id]);
 
